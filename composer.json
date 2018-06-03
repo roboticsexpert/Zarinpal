@@ -1,0 +1,16 @@
+{
+    "name": "roboticsexpert/zarinpal",
+    "description": "zarinpal payment gateway",
+    "minimum-stability ": "dev",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mahdi Youseftabar",
+            "email": "roboticsexpert@gmail.com"
+        }
+    ],
+    "require": {
+        "roboticsexpert/payment-gateways": "^0.1.0"
+    }
+}

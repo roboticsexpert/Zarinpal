@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "roboticsexpert/payment-gateways": "^0.1.0"
+        "roboticsexpert/payment-gateways": "^1.0.0"
     },
     "autoload": {
         "psr-4": {

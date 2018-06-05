@@ -11,11 +11,18 @@
         }
     ],
     "require": {
-        "roboticsexpert/payment-gateways": "^1.0.1"
+        "roboticsexpert/payment-gateways": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "Roboticsexpert\\Zarinpal\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Roboticsexpert\\Zarinpal\\ZarinpalServiceProvider"
+            ]
         }
     }
 }

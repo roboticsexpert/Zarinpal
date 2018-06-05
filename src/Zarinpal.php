@@ -14,7 +14,7 @@ use Roboticsexpert\PaymentGateways\GatewayRequestUrl;
 use Roboticsexpert\PaymentGateways\GatewayVerifyAnswer;
 use Roboticsexpert\PaymentGateways\IGateway;
 
-class Zarinpal implements IGateway
+class Zarinpal implements ZarinpalInterface
 {
 
     private $merchantId;
@@ -97,4 +97,8 @@ class Zarinpal implements IGateway
         return new GatewayVerifyAnswer(in_array($result->Status, [100, 101]), $price, $result->RefID);
     }
 
+    public function getName(): string
+    {
+        return 'zarinpal';
+    }
 }

@@ -6,16 +6,24 @@
  * Time: 12:26 AM
  */
 
-namespace Sibapp\Domains\PlanDomain\Services\PaymentGateways;
+namespace Roboticsexpert\Zarinpal;
 
 
-class ZarinpalSandbox implements IGateway
+use Roboticsexpert\PaymentGateways\GatewayRequestAnswer;
+use Roboticsexpert\PaymentGateways\GatewayRequestUrl;
+use Roboticsexpert\PaymentGateways\GatewayVerifyAnswer;
+
+class ZarinpalSandbox implements ZarinpalInterface
 {
 
-    const MerchantId = '91243184-2ac3-11e6-91df-000c295eb8fc';
-    //const SoapUrl='https://ir.zarinpal.com/pg/services/WebGate/wsdl';
-    const SoapUrl = 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl';
-    const PayUrl = 'https://sandbox.zarinpal.com/pg/StartPay/';
+    private $merchantId;
+    private $soapUrl = 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl';
+    private $payUrl = 'https://sandbox.zarinpal.com/pg/StartPay/';
+
+    public function __construct($merchantId, $isServerLocatedInIran)
+    {
+        $this->merchantId = $merchantId;
+    }
 
     /**
      * @param $callbackUrl
@@ -29,7 +37,7 @@ class ZarinpalSandbox implements IGateway
     public function request($callbackUrl, int $price, $transactionKey, $description, $email = null, $mobile = null)
     {
         $options = array(
-            'MerchantID' => self::MerchantId,
+            'MerchantID' => $this->merchantId,
             'Amount' => $price,
             'Description' => $description,
             'CallbackURL' => $callbackUrl
@@ -39,13 +47,13 @@ class ZarinpalSandbox implements IGateway
             $options['Email'] = $email;
 
         // URL also Can be https://ir.zarinpal.com/pg/services/WebGate/wsdl
-        $client = new \SoapClient(self::SoapUrl, array('encoding' => 'UTF-8'));
+        $client = new \SoapClient($this->soapUrl, array('encoding' => 'UTF-8'));
 
         $result = $client->PaymentRequest($options);
 
         //Redirect to URL You can do it also by creating a form
         if ($result->Status == 100) {
-            return new GatewayRequestAnswer($result->Authority, new GatewayRequestUrl(self::PayUrl . $result->Authority));
+            return new GatewayRequestAnswer($result->Authority, new GatewayRequestUrl($this->payUrl . $result->Authority));
         }
 
         return false;
@@ -64,31 +72,23 @@ class ZarinpalSandbox implements IGateway
     {
 
         $price = $this->normalizePrice($price);
-        $client = new \SoapClient(self::SoapUrl, array('encoding' => 'UTF-8'));
+        $client = new \SoapClient($this->soapUrl, array('encoding' => 'UTF-8'));
 
         $result = $client->PaymentVerification(
             array(
-                'MerchantID' => self::MerchantId,
+                'MerchantID' => $this->merchantId,
                 'Authority' => $authority,
                 'Amount' => $price
             )
         );
 
-        return new GatewayVerifyAnswer(in_array($result->Status, [100, 101]), $this->deNormalizePrice($price), $result->RefID);
+        return new GatewayVerifyAnswer(in_array($result->Status, [100, 101]), $price, $result->RefID);
     }
 
-    /**
-     * @param $price
-     * @return mixed
-     */
-    private function normalizePrice($price): int
+    public function getName(): string
     {
-        return $price * 10;
+        return 'zarinpal-sandbox';
     }
 
-    private function deNormalizePrice($price): int
-    {
-        return $price / 10;
-    }
 }
 

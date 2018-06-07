@@ -55,8 +55,8 @@ class Zarinpal implements ZarinpalInterface
             'CallbackURL' => $callbackUrl
         );
 
-        if (!empty($email))
-            $options['Email'] = $email;
+        if (isset($userAttributes['email']))
+            $options['Email'] = $userAttributes['email'];
 
         // URL also Can be https://ir.zarinpal.com/pg/services/WebGate/wsdl
         $client = new \SoapClient($this->soapUrl, array('encoding' => 'UTF-8'));

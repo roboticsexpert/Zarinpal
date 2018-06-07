@@ -30,11 +30,10 @@ class ZarinpalSandbox implements ZarinpalInterface
      * @param int $price
      * @param $transactionKey
      * @param $description
-     * @param null $email
-     * @param null $mobile
+     * @param array $userAttributes
      * @return bool|GatewayRequestAnswer
      */
-    public function request($callbackUrl, int $price, $transactionKey, $description, $email = null, $mobile = null)
+    public function request($callbackUrl, int $price, $transactionKey, $description, $userAttributes = [])
     {
         $options = array(
             'MerchantID' => $this->merchantId,
@@ -43,8 +42,9 @@ class ZarinpalSandbox implements ZarinpalInterface
             'CallbackURL' => $callbackUrl
         );
 
-        if (!empty($email))
-            $options['Email'] = $email;
+        if (isset($userAttributes['email']))
+            $options['Email'] = $userAttributes['email'];
+
 
         // URL also Can be https://ir.zarinpal.com/pg/services/WebGate/wsdl
         $client = new \SoapClient($this->soapUrl, array('encoding' => 'UTF-8'));
@@ -71,7 +71,6 @@ class ZarinpalSandbox implements ZarinpalInterface
     public function verify(int $price, $authority, $transactionKey, $requestParams = [])
     {
 
-        $price = $this->normalizePrice($price);
         $client = new \SoapClient($this->soapUrl, array('encoding' => 'UTF-8'));
 
         $result = $client->PaymentVerification(

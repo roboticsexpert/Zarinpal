@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 
 class ZarinpalServiceProvider extends ServiceProvider
 {
+    protected $defer = true;
+
     /**
      * Bootstrap services.
      *
@@ -44,4 +46,10 @@ class ZarinpalServiceProvider extends ServiceProvider
             );
         });
     }
+
+    public function provides()
+    {
+        return [ZarinpalInterface::class];
+    }
+
 }

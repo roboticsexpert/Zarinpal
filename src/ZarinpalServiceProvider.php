@@ -26,18 +26,21 @@ class ZarinpalServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (empty(config('zarinpal.merchantId')))
+            throw new \UnexpectedValueException('you should fill merchant id for zarinpal');
+
         $this->app->singleton(ZarinpalInterface::class, function ($app) {
-            if (config('zarinpal.sandbox')) {
+            if (config('zarinpal.sandbox', true)) {
                 //provide sandbox
                 return new ZarinpalSandbox(
                     config('zarinpal.merchantId'),
-                    config('zarinpal.serverLocatedInIran')
+                    config('zarinpal.serverLocatedInIran', true)
                 );
             }
             //provide main zarinpal
             return new Zarinpal(
                 config('zarinpal.merchantId'),
-                config('zarinpal.serverLocatedInIran')
+                config('zarinpal.serverLocatedInIran', true)
             );
         });
     }

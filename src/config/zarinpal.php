@@ -8,6 +8,6 @@
 
 return [
     'merchantId' => env('ZARINPAL_MERCHANT_ID', ''),
-    'serverLocatedInIran' => env('ZARINPAL_IRAN', true),
+    'locationSubdomain' => env('ZARINPAL_LOCATION_SUBDOMAIN', 'ir'),
     'sandbox' => env('ZARINPAL_SANDBOX', false)
 ];

@@ -23,13 +23,10 @@ class Zarinpal implements ZarinpalInterface
     private $payUrl = 'https://www.zarinpal.com/pg/StartPay/';
 
 
-    public function __construct($merchantId, $serverLocatedInIran = true)
+    public function __construct($merchantId, $locationSubdomain = 'ir')
     {
         $this->merchantId = $merchantId;
-        if ($serverLocatedInIran)
-            $this->soapUrl = 'https://ir.zarinpal.com/pg/services/WebGate/wsdl';
-        else
-            $this->soapUrl = 'https://de.zarinpal.com/pg/services/WebGate/wsdl';
+        $this->soapUrl = "https://{$locationSubdomain}.zarinpal.com/pg/services/WebGate/wsdl";
 
     }
 

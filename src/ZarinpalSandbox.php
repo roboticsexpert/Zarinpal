@@ -20,7 +20,7 @@ class ZarinpalSandbox implements ZarinpalInterface
     private $soapUrl = 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl';
     private $payUrl = 'https://sandbox.zarinpal.com/pg/StartPay/';
 
-    public function __construct($merchantId, $isServerLocatedInIran)
+    public function __construct($merchantId, $locationSubdomain = 'ir')
     {
         $this->merchantId = $merchantId;
     }

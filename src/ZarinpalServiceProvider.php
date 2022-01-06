@@ -36,13 +36,13 @@ class ZarinpalServiceProvider extends ServiceProvider
                 //provide sandbox
                 return new ZarinpalSandbox(
                     config('zarinpal.merchantId'),
-                    config('zarinpal.serverLocatedInIran', true)
+                    config('zarinpal.locationSubdomain', 'ir')
                 );
             }
             //provide main zarinpal
             return new Zarinpal(
                 config('zarinpal.merchantId'),
-                config('zarinpal.serverLocatedInIran', true)
+                config('zarinpal.locationSubdomain', 'ir')
             );
         });
     }
